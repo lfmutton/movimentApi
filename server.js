@@ -9,17 +9,30 @@ app.use(cors());
 // Handle GET requests (optional)
 app.get('/api/movement', (req, res) => {
     res.json({
-        movement: 0,
+        status: "success",
+        lastMovement: lastMovement.value,
+        isDetected: lastMovement.detected,
+        timestamp: lastMovement.timestamp,
+        threshold: 0.3  // Show your detection threshold
     });
 });
 
 // Handle POST requests
 app.post('/api/movement', (req, res) => {
     const movement = req.body.movement;
-    console.log(`Received movement: ${movement}`);
+
+    lastMovement = {
+        value: movement,
+        detected: movement > 0.3,
+        timestamp: new Date().toISOString()
+    };
+
+    console.log(`Stored movement: ${movement}`);
+
     res.json({
         status: "success",
-        movementDetected: movement > 0.3
+        movementDetected: lastMovement.detected,
+        currentValue: movement
     });
 });
 
