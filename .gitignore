@@ -1,0 +1,16 @@
+nodeplaintext
+# Ignorar arquivos de ambiente
+.env
+.env.local
+
+# Ignorar pastas de dependências
+node_modules/
+dist/
+
+# Ignorar arquivos de IDE
+.idea/
+.vscode/
+
+# Ignorar logs e arquivos temporários
+*.log
+*.tmp
