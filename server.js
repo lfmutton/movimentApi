@@ -19,7 +19,7 @@ app.post('/api/movement', (req, res) => {
     console.log(`Received movement: ${movement}`);
     res.json({
         status: "success",
-        movementDetected: movement > 0.5
+        movementDetected: movement > 0.3
     });
 });
 
