@@ -9,8 +9,7 @@ app.use(cors());
 // Handle GET requests (optional)
 app.get('/api/movement', (req, res) => {
     res.json({
-        message: "Send POST requests with { movement: number }",
-        example: "curl -X POST [URL] -d '{\"movement\": 0.6}'"
+        valor: 0,
     });
 });
 
