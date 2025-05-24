@@ -6,6 +6,12 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
+let lastMovement = {
+    value: 0,
+    timestamp: null,
+    detected: false
+};
+
 // Handle GET requests (optional)
 app.get('/api/movement', (req, res) => {
     res.json({
