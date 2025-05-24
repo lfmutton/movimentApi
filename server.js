@@ -9,7 +9,7 @@ app.use(cors());
 // Handle GET requests (optional)
 app.get('/api/movement', (req, res) => {
     res.json({
-        moviment: 0,
+        movement: 0,
     });
 });
 
@@ -19,7 +19,7 @@ app.post('/api/movement', (req, res) => {
     console.log(`Received movement: ${movement}`);
     res.json({
         status: "success",
-        movement: movement > 0.5
+        movementDetected: movement > 0.5
     });
 });
 
