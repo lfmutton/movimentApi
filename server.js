@@ -22,7 +22,7 @@ function readData() {
             lastMovement: 0,
             isDetected: false,
             timestamp: "00:00:00",
-            threshold: 0.3
+            threshold: 0.1
         };
     }
 }
@@ -48,9 +48,9 @@ app.post('/api/movement', (req, res) => {
     const newData = {
         status: "success",
         lastMovement: movement,
-        isDetected: movement > 0.3,
+        isDetected: movement > 0.1,
         timestamp: new Date().toISOString(),
-        threshold: 0.3
+        threshold: 0.1
     };
 
     writeData(newData);
