@@ -1,43 +1,64 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-let lastMovement = {
-    value: 0,
-    timestamp: null,
-    detected: false
-};
+const DATA_FILE = path.join(__dirname, './database/moviment.json');
 
-// Handle GET requests (optional)
+// Helper function to read data from JSON file
+function readData() {
+    try {
+        const data = fs.readFileSync(DATA_FILE, 'utf8');
+        return JSON.parse(data);
+    } catch (err) {
+        console.error('Error reading data file:', err);
+        return {
+            status: "success",
+            lastMovement: 0,
+            isDetected: false,
+            timestamp: "00:00:00",
+            threshold: 0.3
+        };
+    }
+}
+
+// Helper function to write data to JSON file
+function writeData(data) {
+    try {
+        fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), 'utf8');
+    } catch (err) {
+        console.error('Error writing data file:', err);
+    }
+}
+
+// Handle GET requests
 app.get('/api/movement', (req, res) => {
-    res.json({
-        status: "success",
-        lastMovement: lastMovement.value,
-        isDetected: lastMovement.detected,
-        timestamp: lastMovement.timestamp,
-        threshold: 0.3  // Show your detection threshold
-    });
+    const data = readData();
+    res.json(data);
 });
 
 // Handle POST requests
 app.post('/api/movement', (req, res) => {
     const movement = req.body.movement;
-
-    lastMovement = {
-        value: movement,
-        detected: movement > 0.3,
-        timestamp: new Date().toISOString()
+    const newData = {
+        status: "success",
+        lastMovement: movement,
+        isDetected: movement > 0.3,
+        timestamp: new Date().toISOString(),
+        threshold: 0.3
     };
 
+    writeData(newData);
     console.log(`Stored movement: ${movement}`);
 
     res.json({
         status: "success",
-        movementDetected: lastMovement.detected,
+        movementDetected: newData.isDetected,
         currentValue: movement
     });
 });
